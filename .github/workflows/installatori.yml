@@ -1,0 +1,100 @@
+# Costruisce gli installatori di Libellus per Windows, macOS e Linux.
+#
+# Si avvia da solo quando pubblichi una nuova release su GitHub
+# (Releases › Draft a new release › Publish release): dopo circa 15-20 minuti
+# gli installatori compaiono tra i file della release.
+#
+# Si può anche avviare a mano da Actions › Installatori › Run workflow:
+# in quel caso i file si trovano in fondo alla pagina dell'esecuzione, alla voce "Artifacts".
+
+name: Installatori
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  desktop:
+    name: Programma per ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            platform: windows-latest
+            args: ''
+          - name: macOS (Intel e Apple Silicon)
+            platform: macos-latest
+            args: '--target universal-apple-darwin'
+          - name: Linux
+            platform: ubuntu-22.04
+            args: ''
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Librerie di sistema per Linux
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - run: npm ci
+
+      - name: Compila e allega alla release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          releaseId: ${{ github.event.release.id }}
+          args: ${{ matrix.args }}
+
+      - name: Conserva gli installatori (avvio manuale)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Libellus-${{ matrix.name }}
+          path: |
+            src-tauri/target/**/release/bundle/nsis/*.exe
+            src-tauri/target/**/release/bundle/msi/*.msi
+            src-tauri/target/**/release/bundle/dmg/*.dmg
+            src-tauri/target/**/release/bundle/appimage/*.AppImage
+            src-tauri/target/**/release/bundle/deb/*.deb
+            src-tauri/target/**/release/bundle/rpm/*.rpm
+          if-no-files-found: ignore
+
+  portatile:
+    name: Versione in un solo file HTML
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npm run build:single
+      - name: Allega libellus.html alla release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp dist-single/index.html libellus.html
+          gh release upload "${{ github.event.release.tag_name }}" libellus.html --clobber
