@@ -1,6 +1,6 @@
 {
   "name": "libellus",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Quaderno digitale libero: appunti a mano, testo e immagini su una tela infinita. Alternativa libera a OneNote e Freeform.",
   "scripts": {
     "dev": "vite",
