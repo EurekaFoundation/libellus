@@ -9,6 +9,7 @@
     "build:demo": "vite build --mode demo",
     "preview": "vite preview",
     "check": "tsc",
+    "tauri": "tauri",
     "desktop": "tauri dev",
     "desktop:build": "tauri build"
   },
