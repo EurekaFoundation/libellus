@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Libellus</title>
+    <meta name="description" content="Libellus: quaderno digitale libero per appunti a mano, testo e immagini." />
+    <meta name="theme-color" content="#1f7a73" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='3' width='22' height='26' rx='3' fill='%231f7a73'/%3E%3Cpath d='M11 9h11M11 14h11M11 19h7' stroke='%23fff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div class="app" id="app" data-sidebar="open">
+      <aside class="sidebar" id="sidebar" aria-label="Quaderni">
+        <div class="brand">
+          <span class="wordmark">Libellus</span>
+          <span class="tagline">quaderno libero</span>
+        </div>
+        <div class="side-actions">
+          <button class="btn btn-primary" id="new-notebook" type="button"></button>
+          <button class="btn" id="import-notebook" type="button"></button>
+          <input type="file" id="import-file" accept=".libellus,.zip,application/zip" hidden />
+        </div>
+        <div class="search">
+          <span class="search-icon" id="search-icon" aria-hidden="true"></span>
+          <input type="search" id="search" placeholder="Cerca nei quaderni" aria-label="Cerca nei quaderni" autocomplete="off" />
+        </div>
+        <div class="results" id="results" hidden></div>
+        <nav class="notebooks" id="notebooks"></nav>
+        <footer class="side-foot">
+          <span class="save-state" id="save-state" role="status">Salvato su questo dispositivo</span>
+          <span class="foot-row">
+            <button class="link-btn" id="show-shortcuts" type="button">Scorciatoie</button>
+            <span>Software libero · GPL-3.0</span>
+          </span>
+        </footer>
+      </aside>
+      <div class="scrim" id="scrim"></div>
+
+      <main class="workspace">
+        <header class="topbar">
+          <button class="icon-btn" id="toggle-sidebar" type="button" title="Mostra o nascondi i quaderni" aria-label="Mostra o nascondi i quaderni"></button>
+          <div class="crumbs">
+            <span class="crumb-nb" id="crumb-notebook"></span>
+            <span class="crumb-sep" aria-hidden="true">/</span>
+            <input class="page-title" id="page-title" aria-label="Titolo della pagina" maxlength="120" />
+          </div>
+          <label class="paper-pick">
+            <span class="visually-hidden">Tipo di foglio</span>
+            <select id="paper"></select>
+          </label>
+          <div class="zoom" role="group" aria-label="Zoom">
+            <button class="icon-btn" id="zoom-out" type="button" title="Riduci (Ctrl −)" aria-label="Riduci"></button>
+            <button class="zoom-label" id="zoom-label" type="button" title="Torna al 100% (Ctrl 0)">100%</button>
+            <button class="icon-btn" id="zoom-in" type="button" title="Ingrandisci (Ctrl +)" aria-label="Ingrandisci"></button>
+            <button class="icon-btn" id="zoom-fit" type="button" title="Mostra tutto il contenuto (Ctrl 1)" aria-label="Mostra tutto il contenuto"></button>
+          </div>
+          <button class="btn" id="export-btn" type="button" aria-haspopup="menu"></button>
+        </header>
+
+        <div class="board-host" id="board-host">
+          <div class="toolbar" id="toolbar" role="toolbar" aria-label="Strumenti">
+            <div class="tool-group" id="tools"></div>
+            <span class="tb-sep" aria-hidden="true"></span>
+            <div class="tool-group" id="swatches"></div>
+            <div class="tool-group" id="sizes"></div>
+            <span class="tb-sep" aria-hidden="true"></span>
+            <div class="tool-group">
+              <button class="tool" id="insert-image" type="button" title="Inserisci immagine (o incolla con Ctrl V)" aria-label="Inserisci immagine"></button>
+              <input type="file" id="image-file" accept="image/*" hidden />
+              <button class="tool" id="insert-pdf" type="button" title="Importa un PDF su cui scrivere" aria-label="Importa PDF"></button>
+              <input type="file" id="pdf-file" accept="application/pdf,.pdf" hidden />
+              <button class="tool" id="undo" type="button" title="Annulla (Ctrl Z)" aria-label="Annulla" disabled></button>
+              <button class="tool" id="redo" type="button" title="Ripeti (Ctrl Y)" aria-label="Ripeti" disabled></button>
+            </div>
+          </div>
+
+          <div class="selbar" id="selbar" hidden>
+            <span id="sel-count"></span>
+            <button class="btn btn-small" id="sel-lock" type="button" hidden></button>
+            <button class="btn btn-small" id="sel-duplicate" type="button"></button>
+            <button class="btn btn-small btn-danger" id="sel-delete" type="button"></button>
+          </div>
+          <div class="drop-hint" id="drop-hint" hidden>Rilascia qui un'immagine, un PDF o un quaderno .libellus</div>
+          <div class="progress" id="progress" role="status" hidden></div>
+        </div>
+      </main>
+    </div>
+
+    <div class="menu" id="menu" role="menu" hidden></div>
+
+    <div class="dialog-backdrop" id="dialog" hidden>
+      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+        <h2 id="dialog-title"></h2>
+        <div class="dialog-body" id="dialog-body"></div>
+        <div class="dialog-actions" id="dialog-actions"></div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "name": "libellus",
+  "version": "0.3.0",
+  "description": "Quaderno digitale libero: appunti a mano, testo e immagini su una tela infinita. Alternativa libera a OneNote e Freeform.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:single": "tsc && vite build --mode single",
+    "build:demo": "vite build --mode demo",
+    "preview": "vite preview",
+    "check": "tsc",
+    "desktop": "tauri dev",
+    "desktop:build": "tauri build"
+  },
+  "keywords": [
+    "note",
+    "handwriting",
+    "notebook",
+    "whiteboard",
+    "onenote",
+    "freeform",
+    "pwa",
+    "open-source"
+  ],
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.4",
+    "typescript": "^7.0.2",
+    "vite": "^6.4.5",
+    "vite-plugin-singlefile": "^2.3.4"
+  },
+  "dependencies": {
+    "@fontsource/atkinson-hyperlegible": "^5.3.0",
+    "@fontsource/cinzel": "^5.3.0",
+    "@tauri-apps/api": "^2.12.4",
+    "@tauri-apps/plugin-dialog": "^2.8.4",
+    "@tauri-apps/plugin-fs": "^2.7.1",
+    "fflate": "^0.8.3",
+    "pdfjs-dist": "^5.7.284",
+    "perfect-freehand": "^1.2.3"
+  },
+  "private": true,
+  "type": "module"
+}

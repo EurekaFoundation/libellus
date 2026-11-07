@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Icona di Libellus: un libretto con le righe e lo stilo. -->
+  <rect x="64" y="64" width="896" height="896" rx="200" fill="#1f7a73"/>
+  <rect x="268" y="196" width="488" height="632" rx="40" fill="#fdfdfb"/>
+  <rect x="268" y="196" width="64" height="632" rx="28" fill="#165c56"/>
+  <rect x="300" y="196" width="32" height="632" fill="#165c56"/>
+  <g stroke="#b9cbe3" stroke-width="14" stroke-linecap="round">
+    <path d="M392 352h288M392 448h288M392 544h288M392 640h176"/>
+  </g>
+  <path d="M396 650 C 440 610, 470 690, 512 640 S 580 600, 604 640" fill="none" stroke="#1b2230" stroke-width="18" stroke-linecap="round"/>
+  <g transform="rotate(40 700 640)">
+    <rect x="676" y="380" width="48" height="300" rx="10" fill="#c9a24a"/>
+    <path d="M676 680 L700 760 L724 680 Z" fill="#8a6a22"/>
+    <rect x="676" y="380" width="48" height="40" rx="10" fill="#8a6a22"/>
+  </g>
+</svg>
